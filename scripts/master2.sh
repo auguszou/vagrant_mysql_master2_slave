@@ -78,7 +78,7 @@ EOF
 # set master1 as slave of master2
 mysql_status="mysql -uroot -p${master2_mysql_root_passwd} -e 'show master status\G'"
 export binlogname=`${mysql_status} | grep "File" | awk '{print $2}'`
-export position=`${mysql_status} | grep "Position" | awk '{print $2}'
+export position=`${mysql_status} | grep "Position" | awk '{print $2}'`
 
 `${cmd_ssh} sudo /etc/init.d/mysql restart`
 

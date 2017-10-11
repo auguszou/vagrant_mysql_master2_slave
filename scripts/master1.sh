@@ -33,6 +33,9 @@ CREATE USER '$replication_user'@'%' IDENTIFIED BY '$replication_passwd';
 GRANT REPLICATION SLAVE ON *.* TO '$replication_user'@'%' IDENTIFIED BY '$replication_passwd';
 FLUSH PRIVILEGES;
 FLUSH TABLES WITH READ LOCK;
+
+USE mysql;
+UPDATE user SET host='%' WHERE user="root" AND host='localhost';
 SELECT SLEEP(10);
 EOF
 } &
