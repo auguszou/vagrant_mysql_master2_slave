@@ -1,3 +1,5 @@
+echo "root:vagrant" | chpasswd
+
 cat >> /etc/mysql/mysql.conf.d/mysqld.cnf <<EOF
 server-id=1
 binlog-do-db=test
@@ -32,10 +34,11 @@ mysql -uroot -p${master1_mysql_root_passwd} <<EOF
 CREATE USER '$replication_user'@'%' IDENTIFIED BY '$replication_passwd';
 GRANT REPLICATION SLAVE ON *.* TO '$replication_user'@'%' IDENTIFIED BY '$replication_passwd';
 FLUSH PRIVILEGES;
-FLUSH TABLES WITH READ LOCK;
 
 USE mysql;
 UPDATE user SET host='%' WHERE user="root" AND host='localhost';
+
+FLUSH TABLES WITH READ LOCK;
 SELECT SLEEP(10);
 EOF
 } &

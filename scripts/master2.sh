@@ -11,6 +11,7 @@ EOF
 
 #variables for master1
 export master1_ip="192.168.2.10"
+export master1_ssh_root_passwd="vagrant"
 export master1_ssh_login_user="ubuntu"
 export master1_ssh_login_passwd="vagrant"
 export master1_mysql_root_passwd="123"
@@ -80,7 +81,8 @@ mysql_status="mysql -uroot -p${master2_mysql_root_passwd} -e 'show master status
 export binlogname=`${mysql_status} | grep "File" | awk '{print $2}'`
 export position=`${mysql_status} | grep "Position" | awk '{print $2}'`
 
-`${cmd_ssh} sudo /etc/init.d/mysql restart`
+export cmd_ssh="sshpass -p ${master1_ssh_root_passwd} ssh -o StrictHostKeyChecking=no -o CheckHostIP=no -o UserKnownHostsFile=/dev/null root@${master1_ip}"
+`${cmd_ssh} /etc/init.d/mysql restart`
 
 mysql -uroot -p${master1_mysql_root_passwd} -h${master1_ip} <<EOF
 STOP SLAVE;
