@@ -1,3 +1,4 @@
+sed -i 's/^PermitRootLogin.*$/PermitRootLogin yes/g' /etc/ssh/sshd_config
 echo "root:vagrant" | chpasswd
 
 cat >> /etc/mysql/mysql.conf.d/mysqld.cnf <<EOF
@@ -47,3 +48,4 @@ EOF
 mysqldump -uroot -p${master1_mysql_root_passwd} ${replication_db} > /vagrant/master1_${replication_db}.sql
 
 /etc/init.d/mysql restart
+/etc/init.d/ssh restart

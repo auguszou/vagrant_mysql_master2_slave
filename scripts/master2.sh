@@ -78,11 +78,11 @@ EOF
 
 # set master1 as slave of master2
 mysql_status="mysql -uroot -p${master2_mysql_root_passwd} -e 'show master status\G'"
-export binlogname=`${mysql_status} | grep "File" | awk '{print $2}'`
-export position=`${mysql_status} | grep "Position" | awk '{print $2}'`
+export binlogname=`mysql -uroot -p${master2_mysql_root_passwd} -e 'show master status\G' | grep "File" | awk '{print $2}'`
+export position=`mysql -uroot -p${master2_mysql_root_passwd} -e 'show master status\G' | grep "Position" | awk '{print $2}'`
 
 export cmd_ssh="sshpass -p ${master1_ssh_root_passwd} ssh -o StrictHostKeyChecking=no -o CheckHostIP=no -o UserKnownHostsFile=/dev/null root@${master1_ip}"
-`${cmd_ssh} /etc/init.d/mysql restart`
+${cmd_ssh} /etc/init.d/mysql restart
 
 mysql -uroot -p${master1_mysql_root_passwd} -h${master1_ip} <<EOF
 STOP SLAVE;
