@@ -21,7 +21,8 @@ export binlogname=`${cmd_ssh} ${cmd_status} | grep "File" | awk '{print $2}'`
 export position=`${cmd_ssh} ${cmd_status} | grep "Position" | awk '{print $2}'`
 
 mysql -uroot -p${slave_mysql_root_passwd} -e "drop database if exists ${replication_db};create database ${replication_db};"
-mysql -uroot -p${slave_mysql_root_passwd} ${replication_db} < /vagrant/${replication_db}.sql
+mysql -uroot -p${slave_mysql_root_passwd} ${replication_db} < /vagrant/master1_${replication_db}.sql
+mysql -uroot -p${slave_mysql_root_passwd} ${replication_db} < /vagrant/master2_${replication_db}.sql
 
 cat >> /etc/mysql/mysql.conf.d/mysqld.cnf <<EOF
 server-id=${slave_server_id}
