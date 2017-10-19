@@ -7,6 +7,7 @@ binlog-ignore-db=mysql
 slow_query_log=1
 sync_binlog=1
 log-bin=mysql-bin
+
 EOF
 
 #variables for master1
@@ -49,7 +50,6 @@ export binlogname=`${cmd_ssh} ${cmd_status} | grep "File" | awk '{print $2}'`
 export position=`${cmd_ssh} ${cmd_status} | grep "Position" | awk '{print $2}'`
 
 cat >> /etc/mysql/mysql.conf.d/mysqld.cnf <<EOF
-server-id=2
 replicate-do-db=test
 replicate-ignore-db=mysql
 replicate-ignore-db=information_schema
@@ -57,9 +57,6 @@ relay-log=mysqld-relay-bin
 log-slave-updates
 slave-skip-errors=all
 slave-net-timeout=60
-
-log-bin=mysql-bin
-slow_query_log=1
 EOF
 
 /etc/init.d/mysql restart
